@@ -1,12 +1,27 @@
+"""
+Track an object using opencv by clicking a point in webcam frame
+@author: Lusajo
+"""
+
 import cv2
 import numpy as np
 
 vid = cv2.VideoCapture(0)
 
+# x1 and y1 for location of clicked point
+# k for checking if clicked or not
 x1, y1, k = 100, 100, 1
 
 
 def select(event, x, y, flags, params):
+    """
+    :param event: Type of event triggered
+    :param x: X position of point selected
+    :param y: Y position of point selected
+    :param flags:
+    :param params:
+    :return: None
+    """
     global x1, y1, k
     if event == cv2.EVENT_LBUTTONDOWN:
         x1, y1 = x, y
@@ -17,6 +32,9 @@ cv2.namedWindow("window")
 cv2.setMouseCallback("window", select)
 
 while True:
+    """
+    First loop before selecting a point to Track
+    """
 
     _, frame = vid.read()
 
@@ -26,6 +44,7 @@ while True:
         old_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         cv2.destroyAllWindows()
         break
+
 old_points = np.array([[x1, y1]], dtype="float32").reshape(-1, 1, 2)
 mask = np.zeros_like(frame)
 
